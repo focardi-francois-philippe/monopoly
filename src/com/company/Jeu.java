@@ -33,18 +33,35 @@ public class Jeu {
         Scanner scanner = new Scanner(new File(FILE_NAME));
         scanner.useDelimiter(";");
         int id = 0;
-        String s = "";
+        String nomCase = "";
+        String type = "";
+        int loyer = 0;
         while (scanner.hasNext())
         {
             id = Integer.parseInt(scanner.next().replaceAll("\r\n",""));
-            s = scanner.next();
-            hCase[id] = new Case(id,s);
+            nomCase = scanner.next();
+            type = scanner.next();
+            loyer = Integer.parseInt(scanner.next().replaceAll("\r\n",""));
+            if(type.equals("Impot"))
+            {
+                hCase[id] = new Impot(id,nomCase,loyer);
+            }
+            else if(type.equals("Chance"))
+            {
+                hCase[id] = new Chance(id,nomCase,loyer);
+            }
+            else
+            {
+                hCase[id] = new CaseProprietaire(id,nomCase,loyer);
+            }
+            //
         }
         scanner.close();
     }
     public void addJoueur(String nom)
     {
         hJoueur[nombreDeJoueur] = new Joueur(nom);
+        hCase[0].addJoueur(hJoueur[nombreDeJoueur]);
         Jeu.nombreDeJoueur++;
     }
     public void lancerJeu()
@@ -60,20 +77,30 @@ public class Jeu {
         while (nombreDeTourEffectuer<=nombreDeTourAEffectuer)
         {
             for (Joueur joueur : hJoueur) {
-                scoreLancer1 = joueur.lancerDes();
-                scoreLancer2 = joueur.lancerDes();
-                joueur.setPosition(scoreLancer1+scoreLancer2);
-                while (scoreLancer1 == scoreLancer2)
+                if(!joueur.getEstPrisonnier())
                 {
-                    nombreDeDouble++;
+                    hCase[joueur.getPosition()].removeJoueur(joueur);
                     scoreLancer1 = joueur.lancerDes();
                     scoreLancer2 = joueur.lancerDes();
-                    if(nombreDeDouble != 3)
+                    joueur.setPosition(scoreLancer1+scoreLancer2);
+                    hCase[joueur.getPosition()].addJoueur(joueur);
+                    while (scoreLancer1 == scoreLancer2)
                     {
-                        joueur.setPosition(scoreLancer1+scoreLancer2);
+                        hCase[joueur.getPosition()].removeJoueur(joueur);
+                        nombreDeDouble++;
+                        scoreLancer1 = joueur.lancerDes();
+                        scoreLancer2 = joueur.lancerDes();
+                        if(nombreDeDouble != 3)
+                            joueur.setPosition(scoreLancer1+scoreLancer2);
+                        else
+                            joueur.deviensPrisonnier();//Case prison
+
+                        hCase[joueur.getPosition()].addJoueur(joueur);
                     }
-                    else
-                        joueur.setPosition(10);//Case prison
+                }
+                else
+                {
+                    joueur.setEstPrisonnier(false);
                 }
                 nombreDeTourEffectuerParJoueur[joueur.getId()-1] = joueur.getNombreDeTour();
                 nombreDeDouble = 0;
@@ -84,6 +111,10 @@ public class Jeu {
                     nombreDeTourEffectuer = nombreDeTourEffectuerParJoueur[i];
             }
         }
+    }
+
+    public Joueur[] gethJoueur() {
+        return hJoueur;
     }
 
     public int getNombreDeTourEffectuer() {

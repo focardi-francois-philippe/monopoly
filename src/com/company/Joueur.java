@@ -14,12 +14,16 @@ public class Joueur {
     private static Des hDes;
     private static int  nombreInstanceJoueur =1;
     private static final int NOMBREDECASE = 40;
+    private int argent;
+    private boolean estPrisonnier;
 
     public Joueur() {
         nombreDeTour = 1;
         position = 0;
         id = nombreInstanceJoueur;
         nombreInstanceJoueur++;
+        argent = 1500;
+        estPrisonnier = false;
     }
 
     public Joueur(String nom) {
@@ -35,17 +39,31 @@ public class Joueur {
         return nombreDeTour;
     }
 
+    public int getPosition() {
+        return position;
+    }
+
     public void setPosition(int position) {
-        if(position+this.position<NOMBREDECASE)
+        int positionActuel = position+this.position;
+        if(positionActuel==30)
+        {
+            deviensPrisonnier();
+        }
+        else if(positionActuel<NOMBREDECASE)
         {
             this.position += position;
         }
         else
         {
-            this.position = this.position+position - NOMBREDECASE;
+            this.position = positionActuel - NOMBREDECASE;
             nombreDeTour+=1;
+            gestionArgent(200);
         }
-        System.out.println(nom + "  " + this.position);
+    }
+    public void deviensPrisonnier()
+    {
+        this.position = 10;
+        estPrisonnier = true;
     }
 
     public void setNombreDeTour(int nombreDeTour) {
@@ -54,5 +72,26 @@ public class Joueur {
 
     public int getId() {
         return id;
+    }
+
+    public void gestionArgent(int argent) {
+        this.argent += argent;
+    }
+
+    public boolean getEstPrisonnier() {
+        return estPrisonnier;
+    }
+
+    public void setEstPrisonnier(boolean estPrisonnier) {
+        this.estPrisonnier = estPrisonnier;
+    }
+
+    @Override
+    public String toString() {
+        return "Joueur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", argent=" + argent +
+                '}';
     }
 }
