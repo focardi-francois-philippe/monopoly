@@ -1,21 +1,21 @@
 package com.company;
 
 public class ControllerMonopoly {
-    private Jeu j;
+    private Jeu jeu;
 
     public ControllerMonopoly(int nombreDeTour) {
-        this.j = new Jeu(nombreDeTour);
+        this.jeu = new Jeu(nombreDeTour);
     }
     public void addJoueur(String nom)
     {
-        j.addJoueur(nom);
+        jeu.addJoueur(nom);
     }
     public void lancerJeu()
     {
-        j.lancerJeu();
+        jeu.lancerJeu();
     }
 
     public Jeu getJ() {
-        return j;
+        return jeu;
     }
 }
