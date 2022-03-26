@@ -124,7 +124,6 @@ public class Jeu {
                             joueur.lancerLesDes();
                             hCase[joueur.getPosition()].placerJoueur(joueur);
                             hCase[joueur.getPosition()].actionCase(joueur);
-
                         }
                         else
                             joueur.deviensPrisonnier();//Case prison

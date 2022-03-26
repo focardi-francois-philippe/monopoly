@@ -84,17 +84,11 @@ public class Joueur {
 
 
         gestionArgent(-caseProprietaire.prixDAchat);
-        proprietesListToString();
+
     }
     public int sizeForKey(String s)
     {
         return casesPossedes.get(s).size();
-    }
-
-    public void proprietesListToString()
-    {
-        System.out.println(casesPossedes);
-
     }
 
 
@@ -162,10 +156,5 @@ public class Joueur {
         Joueur joueur = (Joueur) o;
 
         return id == joueur.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }
