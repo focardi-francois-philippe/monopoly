@@ -50,6 +50,7 @@ public abstract class CaseProprietaire extends Case{
     }
 
     public abstract int calculLoyer(Joueur locataire,Joueur proprietaire);
+
     public String getCle() {
         return cle;
     }

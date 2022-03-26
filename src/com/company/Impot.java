@@ -5,12 +5,7 @@ public class Impot extends CaseNonProprietaire{
         super(numeroDeCase, nom, loyer);
     }
 
-    @Override
-    public void placerJoueur(Joueur joueur) {
-        super.placerJoueur(joueur);
-        System.out.println("Case impot "+loyer);
-        actionCase(joueur);
-    }
+
 
     @Override
     public void actionCase(Joueur joueur) {

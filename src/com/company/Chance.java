@@ -6,13 +6,6 @@ public class Chance extends CaseNonProprietaire{
         super(id, nomCase, loyer);
     }
 
-    @Override
-    public void placerJoueur(Joueur joueur) {
-        super.placerJoueur(joueur);
-        System.out.println("Carte chance +"+loyer);
-
-    }
-
     public void actionCase(Joueur joueur) {
         super.actionCase(joueur);
         System.out.println("Case Chance +100");
