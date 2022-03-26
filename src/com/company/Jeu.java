@@ -91,8 +91,7 @@ public class Jeu {
     }
     public void lancerJeu()
     {
-        int scoreLancer1;
-        int scoreLancer2;
+        boolean joueurOntDeLargent = true;
         int nombreDeDouble = 0;
         int positionPrecedente = 0;
         int[] nombreDeTourEffectuerParJoueur = new int[nombreDeJoueur];
@@ -100,7 +99,7 @@ public class Jeu {
             nombreDeTourEffectuerParJoueur[i] = 1;
         }
 
-        while (nombreDeTourEffectuer<=nombreDeTourAEffectuer)
+        while (nombreDeTourEffectuer<=nombreDeTourAEffectuer && joueurOntDeLargent)
         {
             for (Joueur joueur : hJoueur) {
                 positionPrecedente = joueur.getPosition();
@@ -143,6 +142,7 @@ public class Jeu {
                 if (nombreDeTourEffectuer < nombreDeTourEffectuerParJoueur[i])
                     nombreDeTourEffectuer = nombreDeTourEffectuerParJoueur[i];
             }
+            joueurOntDeLargent = joueurOntDeLargent();
         }
     }
 
@@ -152,5 +152,16 @@ public class Jeu {
 
     public int getNombreDeTourEffectuer() {
         return nombreDeTourEffectuer;
+    }
+    public boolean joueurOntDeLargent()
+    {
+        for(int i =0;i<NOMBRE_DE_JOUEUR_MAX;i++)
+        {
+            if(hJoueur[i].getArgent()<0)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
