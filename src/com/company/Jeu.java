@@ -35,13 +35,18 @@ public class Jeu {
         int id = 0;
         String nomCase = "";
         String type = "";
+        String cle = "";
         int loyer = 0;
+        int prixDAchat = 0;
         while (scanner.hasNext())
         {
             id = Integer.parseInt(scanner.next().replaceAll("\r\n",""));
             nomCase = scanner.next();
             type = scanner.next();
+            cle = scanner.next();
+            prixDAchat = Integer.parseInt(scanner.next().replaceAll("\r\n",""));
             loyer = Integer.parseInt(scanner.next().replaceAll("\r\n",""));
+
             if(type.equals("Impot"))
             {
                 hCase[id] = new Impot(id,nomCase,loyer);
@@ -50,9 +55,29 @@ public class Jeu {
             {
                 hCase[id] = new Chance(id,nomCase,loyer);
             }
+            else if(type.equals("AllerEnPrison"))
+            {
+                hCase[id] = new AllerEnPrison(id,nomCase,loyer);
+            }
+            else if(type.equals("Depart"))
+            {
+                hCase[id] = new Depart(id,nomCase,loyer);
+            }
+            else if(type.equals("ProprieteGare"))
+            {
+                hCase[id] = new ProprieteGare(id,nomCase,loyer,prixDAchat,cle);
+            }
+            else if(type.equals("ProprieteMaison"))
+            {
+                hCase[id] = new ProprieteMaison(id,nomCase,loyer,prixDAchat,cle);
+            }
+            else if(type.equals("ProprieteCompagnie"))
+            {
+                hCase[id] = new ProprieteCompagnie(id,nomCase,loyer,prixDAchat,cle);
+            }
             else
             {
-                hCase[id] = new CaseProprietaire(id,nomCase,loyer);
+                hCase[id] = new NoAction(id,nomCase,loyer);
             }
             //
         }
@@ -61,7 +86,7 @@ public class Jeu {
     public void addJoueur(String nom)
     {
         hJoueur[nombreDeJoueur] = new Joueur(nom);
-        hCase[0].addJoueur(hJoueur[nombreDeJoueur]);
+        hCase[0].placerJoueur(hJoueur[nombreDeJoueur]);
         Jeu.nombreDeJoueur++;
     }
     public void lancerJeu()
@@ -69,6 +94,7 @@ public class Jeu {
         int scoreLancer1;
         int scoreLancer2;
         int nombreDeDouble = 0;
+        int positionPrecedente = 0;
         int[] nombreDeTourEffectuerParJoueur = new int[nombreDeJoueur];
         for (int i =0;i<nombreDeJoueur;i++) {
             nombreDeTourEffectuerParJoueur[i] = 1;
@@ -77,25 +103,32 @@ public class Jeu {
         while (nombreDeTourEffectuer<=nombreDeTourAEffectuer)
         {
             for (Joueur joueur : hJoueur) {
+                positionPrecedente = joueur.getPosition();
                 if(!joueur.getEstPrisonnier())
                 {
                     hCase[joueur.getPosition()].removeJoueur(joueur);
-                    scoreLancer1 = joueur.lancerDes();
-                    scoreLancer2 = joueur.lancerDes();
-                    joueur.setPosition(scoreLancer1+scoreLancer2);
-                    hCase[joueur.getPosition()].addJoueur(joueur);
-                    while (scoreLancer1 == scoreLancer2)
+                    joueur.lancerLesDes();
+                    if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0 && joueur.getEstPrisonnier() == false)//pas 0 car sinon l'action est effectue juste avant
+                        hCase[0].actionCase(joueur);
+                    hCase[joueur.getPosition()].placerJoueur(joueur);
+                    hCase[joueur.getPosition()].actionCase(joueur);
+
+                    while (joueur.getLancer1() == joueur.getLancer2() && !joueur.getEstPrisonnier())
                     {
+                        positionPrecedente = joueur.getPosition();
                         hCase[joueur.getPosition()].removeJoueur(joueur);
                         nombreDeDouble++;
-                        scoreLancer1 = joueur.lancerDes();
-                        scoreLancer2 = joueur.lancerDes();
+                        if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0 && joueur.getEstPrisonnier() == false)//pas 0 car sinon l'action est effectue juste avant
+                            hCase[0].actionCase(joueur);
                         if(nombreDeDouble != 3)
-                            joueur.setPosition(scoreLancer1+scoreLancer2);
+                        {
+                            joueur.lancerLesDes();
+                            hCase[joueur.getPosition()].placerJoueur(joueur);
+                            hCase[joueur.getPosition()].actionCase(joueur);
+
+                        }
                         else
                             joueur.deviensPrisonnier();//Case prison
-
-                        hCase[joueur.getPosition()].addJoueur(joueur);
                     }
                 }
                 else

@@ -12,6 +12,10 @@ public abstract class Case {
     protected int loyer;
     protected ArrayList<Joueur> joueur;
 
+    public String getNom() {
+        return nom;
+    }
+
     public Case() {
     }
 
@@ -22,7 +26,7 @@ public abstract class Case {
         joueur = new ArrayList<>();
     }
 
-    public void addJoueur(Joueur joueur) {
+    public void placerJoueur(Joueur joueur) {
         this.joueur.add(joueur);
     }
     public void removeJoueur(Joueur joueur)
@@ -37,6 +41,7 @@ public abstract class Case {
     public int getLoyer() {
         return loyer;
     }
+    public abstract void actionCase(Joueur joueur);
 
     @Override
     public String toString() {
