@@ -15,6 +15,7 @@ public abstract class CaseProprietaire extends Case{
         proprietaire = null;
     }
 
+
     public CaseProprietaire(int numeroDeCase, String nom, int loyer) {
         super(numeroDeCase, nom, loyer);
     }
@@ -22,7 +23,7 @@ public abstract class CaseProprietaire extends Case{
     @Override
     public void actionCase(Joueur joueur) {
         int loyerAPayer = 0;
-        System.out.print(joueur.getNom() + " Vous etes tombe sur "+this.getNom() + " Qui a pour cle "+this.cle + "Qui appartient a "+proprietaire);
+        System.out.print(joueur.getNom() + " Vous etes tombe sur "+this.getNom() + " Qui a pour cle "+this.cle + "Qui appartient a "+proprietaire.getNom());
         if(proprietaire!=null && !joueur.equals(proprietaire))
         {
             loyerAPayer = calculLoyer(joueur,proprietaire);
