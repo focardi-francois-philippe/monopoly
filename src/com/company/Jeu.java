@@ -107,23 +107,26 @@ public class Jeu {
                 {
                     hCase[joueur.getPosition()].removeJoueur(joueur);
                     joueur.lancerLesDes();
-                    if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0 && joueur.getEstPrisonnier() == false)//pas 0 car sinon l'action est effectue juste avant
-                        hCase[0].actionCase(joueur);
+
                     hCase[joueur.getPosition()].placerJoueur(joueur);
                     hCase[joueur.getPosition()].actionCase(joueur);
-
+                    if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0
+                            && joueur.getEstPrisonnier() == false)//position different de 0car sinon l'action est effectue la ligne precedante
+                        hCase[0].actionCase(joueur);
                     while (joueur.getLancer1() == joueur.getLancer2() && !joueur.getEstPrisonnier())
                     {
                         positionPrecedente = joueur.getPosition();
                         hCase[joueur.getPosition()].removeJoueur(joueur);
                         nombreDeDouble++;
-                        if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0 && joueur.getEstPrisonnier() == false)//pas 0 car sinon l'action est effectue juste avant
-                            hCase[0].actionCase(joueur);
+
                         if(nombreDeDouble != 3)
                         {
                             joueur.lancerLesDes();
                             hCase[joueur.getPosition()].placerJoueur(joueur);
                             hCase[joueur.getPosition()].actionCase(joueur);
+                            if(joueur.getPosition()<positionPrecedente && joueur.getPosition() != 0
+                                    && joueur.getEstPrisonnier() == false)//position different de 0car sinon l'action est effectue la ligne precedante
+                                hCase[0].actionCase(joueur);
                         }
                         else
                             joueur.deviensPrisonnier();//Case prison
@@ -141,7 +144,7 @@ public class Jeu {
                 if (nombreDeTourEffectuer < nombreDeTourEffectuerParJoueur[i])
                     nombreDeTourEffectuer = nombreDeTourEffectuerParJoueur[i];
             }
-            joueurOntDeLargent = joueurOntDeLargent();
+            joueurOntDeLargent = joueurOntDeLargent(); // verifie si un joueur est en faillite
         }
     }
 

@@ -24,7 +24,7 @@ public abstract class CaseProprietaire extends Case{
     public void actionCase(Joueur joueur) {
         int loyerAPayer = 0;
         System.out.print(joueur.getNom() + " Vous etes tombe sur "+this.getNom() + " Qui a pour cle "+this.cle + "Qui appartient a "+proprietaire.getNom());
-        if(proprietaire!=null && !joueur.equals(proprietaire))
+        if(proprietaire!=null && !joueur.equals(proprietaire))//Si la case a un proprietaire et ce n'est pas lui passé en parametre joueur paye le loyer
         {
             loyerAPayer = calculLoyer(joueur,proprietaire);
             System.out.println(" qui appartient a "+proprietaire.getNom() + " vous payez"+loyerAPayer);
